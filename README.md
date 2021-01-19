@@ -6,7 +6,7 @@
 npm install
 ```
 
-2. Make sure you have Redis installed and running on PORT 6379.
+2. Make sure you have Redis installed and running on port 6379
 
 3. Start project
 
@@ -14,7 +14,7 @@ npm install
 npm start
 ```
 
-4. Start project in dev mode
+for dev mode
 
 ```
 npm run dev
