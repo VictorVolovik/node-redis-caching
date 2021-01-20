@@ -11,13 +11,19 @@ const CACHE_LIFETIME = 60 * 5; // 5 minutes
 const app = express();
 const redisClient = redis.createClient(REDIS_PORT);
 
+// Helper for response
 function setReposeNumResponse (username, reposNum) {
   return `<h2>${username} has ${reposNum} public repositories.</h2>`
 }
 
 // Cache middleware
-function cache (req, res, next) {
+function cacheReposNum (req, res, next) {
   const { username } = req.params;
+  const { clearCache } = req.query;
+
+  if (clearCache) {
+    return next();
+  }
 
   redisClient.get(username, (err, data) => {
     if (err) throw err;
@@ -25,7 +31,7 @@ function cache (req, res, next) {
     if(data !== null) {
       res.send(setReposeNumResponse(username, data))
     } else {
-      next();
+      return next();
     }
   })
 }
@@ -50,7 +56,7 @@ async function getReposNum (req, res, next) {
   }
 }
 
-app.get("/repos_number/:username", cache, getReposNum);
+app.get("/repos_number/:username", cacheReposNum, getReposNum);
 
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
