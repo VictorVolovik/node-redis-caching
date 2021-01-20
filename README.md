@@ -3,7 +3,9 @@
 ## Prerequisites
 
 Node.js >= 12
+
 NPM >= 6
+
 Redis >= 6
 
 ## Installation
